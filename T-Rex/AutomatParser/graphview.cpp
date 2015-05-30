@@ -66,7 +66,7 @@ GraphView::makeBezier(const bezier& bezier) const
 
 
 void
-GraphView::drawArrow(const QLineF& line, const QColor& color, QPainter* painter) const
+GraphView::drawArrow(const QLineF& line, const textlabel_t* textlabel, const QColor& color, QPainter* painter) const
 {
     QLineF n(line.normalVector());
     QPointF o(n.dx() / 3.0, n.dy() / 3.0);
@@ -84,6 +84,19 @@ GraphView::drawArrow(const QLineF& line, const QColor& color, QPainter* painter)
     painter->setBrush(brush);
 
     painter->drawPolygon(polygon);
+
+    painter->setPen(textlabel->fontcolor);
+
+    QFont font(textlabel->fontname, textlabel->fontsize);
+    font.setPixelSize(textlabel->fontsize);
+    painter->setFont(font);
+
+    QString text(QString::fromUtf8(textlabel->text));
+    QFontMetricsF fm(painter->fontMetrics());
+    QRectF rect(fm.boundingRect(text));
+    rect.moveCenter(gToQ(textlabel->pos, true));
+    painter->drawText(rect.adjusted(-1, -1, +1, +1), Qt::AlignCenter, text);
+
 }
 
 
@@ -192,17 +205,7 @@ GraphView::drawLabel(const textlabel_t* textlabel, QPainter* painter) const
 void
 GraphView::drawLabel2(const textlabel_t* textlabel, QPainter* painter) const
 {
-    painter->setPen(textlabel->fontcolor);
 
-    QFont font(textlabel->fontname, textlabel->fontsize);
-    font.setPixelSize(textlabel->fontsize);
-    painter->setFont(font);
-
-    QString text(QString::fromUtf8(textlabel->text));
-    QFontMetricsF fm(painter->fontMetrics());
-    QRectF rect(fm.boundingRect(text));
-    rect.moveCenter(gToQ(textlabel->pos, true));
-    painter->drawText(rect.adjusted(-1, -1, +1, +1), Qt::AlignCenter, text);
 }
 
 
@@ -274,7 +277,7 @@ GraphView::renderGraph(graph_t* graph)
             if (ED_label(edge)==0)
                 continue;
             painter1.begin(&picture1);
-            drawLabel2(ED_label(edge),&painter1);
+          //  drawLabel2(ED_label(edge),&painter1);
             //painter1.end();
 
             for (int i = 0; i < spl->size; ++i)
@@ -290,9 +293,9 @@ GraphView::renderGraph(graph_t* graph)
 
              //painter.begin(&picture);
             if (bz.sflag)
-                drawArrow(QLineF(gToQ(bz.list[0]), gToQ(bz.sp)), color, &painter1);
+                drawArrow(QLineF(gToQ(bz.list[0]), gToQ(bz.sp)),ED_label(edge), color, &painter1);
             if (bz.eflag)
-                drawArrow(QLineF(gToQ(bz.list[bz.size-1]), gToQ(bz.ep)), color, &painter1);
+                drawArrow(QLineF(gToQ(bz.list[bz.size-1]), gToQ(bz.ep)),ED_label(edge), color, &painter1);
              painter1.end();
 
             QString text1(ND_label(node)->text);

@@ -45,7 +45,7 @@ private:
     void drawLabel(const textlabel_t* textlabel, QPainter* painter) const;
     void drawLabel2(const textlabel_t* textlabel, QPainter* painter) const;
 
-    void drawArrow(const QLineF& line, const QColor& color, QPainter* painter) const;
+    void drawArrow(const QLineF& line,const textlabel_t* textlabel, const QColor& color, QPainter* painter) const;
 
 };
 
