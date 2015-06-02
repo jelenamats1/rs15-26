@@ -13,6 +13,8 @@ AcceptWidget::AcceptWidget(QWidget *parent)
 
 }
 //! [0]
+//!
+//!
 
 void AcceptWidget::dragEnterEvent(QDragEnterEvent *event)
 {

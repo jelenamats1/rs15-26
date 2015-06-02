@@ -3,7 +3,7 @@
 
 #include "guibuilder.h"
 #include "dragwidget.h"
-#include "acceptwidget.h"
+#include "diagram.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -14,7 +14,7 @@ DiagramFrame::DiagramFrame(QWidget *parent) :
     ui(new Ui::DiagramFrame)
 {
     ui->setupUi(this);
-
+    w->hide();
     makePanel();
     makeShow();
 }
@@ -43,13 +43,80 @@ void DiagramFrame::makeShow(){
 
 void DiagramFrame::makePanel(){
 
-    auto lay = ui->centralLayout;
+    auto lay1 = ui->centralLayout;
+    QFrame* d = new QFrame(this);
+    d->setContextMenuPolicy(Qt::CustomContextMenu);
+    lay1->addWidget(d,1);
+    lay->addLayout(lay1);
+    connect(d,SIGNAL(customContextMenuRequested(const QPoint &)),this,SLOT(ProvideContextMenu(const QPoint &)));
 
-    /*
-    * bag: kad prevlacim sa AcceptWidget na DragWidget program puca
-    * trebalo bi samo izignorisati dropAction
-    */
-    lay->addWidget(new DragWidget);
-    lay->addWidget(new AcceptWidget, 1);
 
 }
+void DiagramFrame::ProvideContextMenu(const QPoint &pos)
+{
+
+//item = ui->tableWidget->itemAt(pos);
+// QPoint globalPos = ui->tableWidget->mapToGlobal(pos);
+QAction *i = new QAction(".",this);
+connect(i,SIGNAL(triggered()),this,SLOT(newRow()));
+QAction *ili = new QAction("|",this);
+connect(ili ,SIGNAL(triggered()),this,SLOT(deleteRow()));
+QAction *upitnik = new QAction("?",this);
+connect(upitnik ,SIGNAL(triggered()),this,SLOT(Update()));
+QAction *plus = new QAction("+",this);
+connect(plus ,SIGNAL(triggered()),this,SLOT(Plus()));
+QAction *zvezda = new QAction("*",this);
+connect(zvezda ,SIGNAL(triggered()),this,SLOT(Zvezda()));
+QMenu *pContextMenu = new QMenu( this);
+pContextMenu->addAction(i);
+pContextMenu->addAction(ili);
+pContextMenu->addAction(upitnik);
+pContextMenu->addAction(plus);
+pContextMenu->addAction(zvezda);
+pContextMenu->exec( mapToGlobal(pos) );
+delete pContextMenu;
+pContextMenu = NULL;
+}
+
+void DiagramFrame::newRow()
+{
+QTextEdit* e1 = new QTextEdit(this);
+QTextEdit* e2 = new QTextEdit(this);
+//e1->set
+e1->show();
+e2->show();
+
+
+//w->show();
+//dodavati u drvo sve stavke
+//prvo koren jer ga znas
+//apoddrveta kako se unose dodajes npr
+}
+
+void DiagramFrame::deleteRow()
+{
+    qDebug() << "2";
+//int row = ui->tableWidget->row(item);
+//ui->tableWidget->removeRow(row);
+}
+
+void DiagramFrame::Plus()
+{
+    qDebug() << "1";
+//int row = ui->tableWidget->rowCount();
+//ui->tableWidget->insertRow(row);
+}
+
+void DiagramFrame::Zvezda()
+{
+    qDebug() << "2";
+//int row = ui->tableWidget->row(item);
+//ui->tableWidget->removeRow(row);
+}
+void DiagramFrame::Update()
+{
+    qDebug() << "1";
+//int row = ui->tableWidget->rowCount();
+//ui->tableWidget->insertRow(row);
+}
+

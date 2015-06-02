@@ -34,7 +34,8 @@ SOURCES += main.cpp\
     AutomatParser/graphview.cpp \
     Gui/dragwidget.cpp \
     Gui/acceptwidget.cpp \
-    AutomatParser/kretanje.cpp
+    AutomatParser/kretanje.cpp \
+    Gui/diagram.cpp
 
 HEADERS  += \
     AutomatParser/TreeNodes.hpp \
@@ -52,7 +53,8 @@ HEADERS  += \
     AutomatParser/graphview.h \
     Gui/dragwidget.h \
     Gui/acceptwidget.h \
-    AutomatParser/kretanje.h
+    AutomatParser/kretanje.h \
+    Gui/diagram.h
 
 FORMS    += \
     Gui/uvodframe.ui \
