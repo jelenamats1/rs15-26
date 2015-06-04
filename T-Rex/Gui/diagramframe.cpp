@@ -43,11 +43,11 @@ void DiagramFrame::makeShow(){
 
 void DiagramFrame::makePanel(){
 
-    auto lay1 = ui->centralLayout;
+    lay = ui->verticalLayout;
     QFrame* d = new QFrame(this);
     d->setContextMenuPolicy(Qt::CustomContextMenu);
-    lay1->addWidget(d,1);
-    lay->addLayout(lay1);
+    lay->addWidget(d,1);
+    //lay1->addLayout(lay);
     connect(d,SIGNAL(customContextMenuRequested(const QPoint &)),this,SLOT(ProvideContextMenu(const QPoint &)));
 
 
@@ -58,7 +58,7 @@ void DiagramFrame::ProvideContextMenu(const QPoint &pos)
 //item = ui->tableWidget->itemAt(pos);
 // QPoint globalPos = ui->tableWidget->mapToGlobal(pos);
 QAction *i = new QAction(".",this);
-connect(i,SIGNAL(triggered()),this,SLOT(newRow()));
+connect(i,SIGNAL(triggered()),this,SLOT(newRow(const QPoint&)));
 QAction *ili = new QAction("|",this);
 connect(ili ,SIGNAL(triggered()),this,SLOT(deleteRow()));
 QAction *upitnik = new QAction("?",this);
@@ -78,19 +78,21 @@ delete pContextMenu;
 pContextMenu = NULL;
 }
 
-void DiagramFrame::newRow()
+void DiagramFrame::newRow(const QPoint &pos)
 {
 QTextEdit* e1 = new QTextEdit(this);
 QTextEdit* e2 = new QTextEdit(this);
-//e1->set
+QLabel* kon = new QLabel(".");
+kon->move(pos.x(), pos.y());
+e1->move(pos.x()-20, pos.y()+20);
+e2->move(pos.x()+20, pos.y()+20);
 e1->show();
 e2->show();
-
 
 //w->show();
 //dodavati u drvo sve stavke
 //prvo koren jer ga znas
-//apoddrveta kako se unose dodajes npr
+//a poddrveta kako se unose dodajes npr
 }
 
 void DiagramFrame::deleteRow()

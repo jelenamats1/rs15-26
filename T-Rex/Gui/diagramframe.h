@@ -21,7 +21,7 @@ public:
     ~DiagramFrame();
 public slots:
     void ProvideContextMenu(const QPoint &pos);
-    void newRow();
+    void newRow(const QPoint &pos);
     void deleteRow();
     void Update();
     void Plus();
